@@ -22,6 +22,8 @@
 #include <vector>
 
 namespace py = pybind11;
+
+// 这是一个C++模板类，用于包装指针，并提供了一些操作，如获取指针、销毁指针等。这种包装可以用于管理资源的生命周期。
 template <class T>
 class PtrWrapper {
 public:
@@ -41,6 +43,8 @@ private:
 extern "C" {
 
 int32_t itemsize(const diopiDtype_t dtype);
+
+// 这个类管理存储的内存分配和释放。它使用传入的malloc和free函数来分配和释放内存，并记录存储的字节数和指针。
 class Storage final {
 private:
     malloc_func_t mallocFn_;
@@ -66,6 +70,7 @@ public:
     int64_t nbytes() const { return nbytes_; }
 };
 
+// 这个类表示一个张量对象，包括形状、数据类型、设备等信息。它还管理与存储相关的数据。为了与DIOPI框架中的张量对象进行交互而创建的。
 struct diopiTensor {
 private:
     std::vector<int64_t> shape_;
@@ -136,6 +141,7 @@ public:
     diopiContextHandle_t getCtx() const { return context_; }
 };
 
+// 这个类表示一个上下文对象，可能是用于管理DIOPI操作的环境。它包括一个流句柄和一组张量句柄，可以创建、销毁和清除这些张量。
 struct diopiContext {
 private:
     diopiStreamHandle_t stream_{nullptr};
